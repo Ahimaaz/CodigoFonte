@@ -13,7 +13,7 @@ public class ThreadServico extends Thread {
 
     private static final String CATEGORIA = "livro";
     protected boolean ativo = false;
-
+    private CheckConnectionType connectionType = new CheckConnectionType(ApplicationContextProvider.getContext());
 
     public void run(){
         Log.i(CATEGORIA, "run()");
@@ -35,11 +35,13 @@ public class ThreadServico extends Thread {
                 int ult_bateria = bateria.getPorcentagem();
                 String ult_memIntLivre = memoria.getMemoriaInternaLivre();
                 String ult_memExtLivre = memoria.getMemoriaExternaLivre();
+                String connType = this.connectionType.ConnectionType();
 
                 Log.i(CATEGORIA, "Retorno Localização: " + ult_localizacao);
                 Log.i(CATEGORIA, "Retorno Bateria: " + ult_bateria + "%");
                 Log.i(CATEGORIA, "Retorno Memoria Interna Livre: " + ult_memIntLivre + " bytes");
                 Log.i(CATEGORIA, "Retorno Memoria Externa Livre: " + ult_memExtLivre + " bytes");
+                Log.d(CATEGORIA, "Retorno Tipo de conexão: " + connType);
 
                 SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
                 String dataCorrente = data.format(new Date());
@@ -48,7 +50,7 @@ public class ThreadServico extends Thread {
                 String horaCorrente = hora.format(new Date());
 
                 linha = dataCorrente + ";" + horaCorrente + ";" + ult_localizacao + ";" + ult_bateria + ";" +
-                        ult_memIntLivre + ";" + ult_memExtLivre;
+                        ult_memIntLivre + ";" + ult_memExtLivre + ';' + connType;
                 arquivo.salvar(linha);
 
             }catch (InterruptedException e){
